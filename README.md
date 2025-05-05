@@ -75,6 +75,7 @@ A fun and intuitive **hand gesture-based painting application** built using **Op
 
 <pre>
 Virtual-Painter/
+├── Saved Canvas                # Saved Canvas 
 ├── handTrackingModule.py       # Custom hand tracking class (using MediaPipe)
 ├── VirtualPainter.py           # Main file
 ├── Image/                      # Header icons for color selection
