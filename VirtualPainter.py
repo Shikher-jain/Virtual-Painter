@@ -24,9 +24,12 @@ overlayList = []
 
 drawColor = (255, 0, 255)  # Default color
 brushThickness = 15
-eraserThickness = 50
+eraserThickness = 100
 xp, yp = 0, 0
 imgCanvas = np.zeros((720, 1280, 3), np.uint8)
+useAddWeighted = True
+
+
 
 # Load all header images
 for imgPath in myList:
@@ -90,13 +93,17 @@ while True:
             cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, thickness)
             xp, yp = x1, y1
 
-    # Merge canvas with camera feed
-    imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
-    _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
-    imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
 
-    image = cv2.bitwise_and(image, imgInv)
-    image = cv2.bitwise_or(image, imgCanvas)
+    if useAddWeighted:
+        image = cv2.addWeighted(image, 0.75, imgCanvas, 0.95, 0)
+    else:
+        imgGray = cv2.cvtColor(imgCanvas, cv2.COLOR_BGR2GRAY)
+        _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
+        imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
+        image = cv2.bitwise_and(image, imgInv)
+        image = cv2.bitwise_or(image, imgCanvas)
+
+
 
     # Add header
     image[0:header.shape[0], 0:header.shape[1]] = header
@@ -110,8 +117,13 @@ while True:
         break
     elif key == ord('s'):
         timestamp = time.strftime("%Y%m%d-%H%M%S")
-        cv2.imwrite(f"Painting_{timestamp}.png", imgCanvas)
-        print(f"Canvas saved as Painting_{timestamp}.png")
+        cv2.imwrite(os.path.dirname(os.path.abspath(__file__)) + f"/Saved Canvas/Painting_{timestamp}.png", imgCanvas)
+        print(f"Canvas saved as {os.path.dirname(os.path.abspath(__file__)) }+ /Saved Canvas/Painting_{timestamp}.png")
+
+
+    elif key == ord('m'):
+        useAddWeighted = not useAddWeighted
+        print(f"Blending mode changed: {'addWeighted' if useAddWeighted else 'bitwise'}")
 
     # Release resources
 cap.release()
