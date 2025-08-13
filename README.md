@@ -21,7 +21,7 @@
 
 <p align="center">
   <a href="https://github.com/Shikher-jain/Shikher-jain">
-    <img src="https://readme-typing-svg.herokuapp.com/?lines=Self%20Taught%20Programmer;Python%20Developer;1.5%2B%20years%20of%20coding%20experience;Always%20learning%20new%20things;Visit%20My%20LinkedIn%20Profile;https://www.linkedin.com/in/shikher-jain-0bb8a8259&center=true&width=380&height=45">
+    <img src="https://readme-typing-svg.herokuapp.com/?lines=Self%20Taught%20Programmer;Python%20Developer;2.5%2B%20years%20of%20coding%20experience;Always%20learning%20new%20things;Visit%20My%20LinkedIn%20Profile;https://www.linkedin.com/in/shikher-jain-0bb8a8259&center=true&width=380&height=45">
   </a>
 </p>
 
@@ -102,6 +102,13 @@ Virtual-Painter/
 ├── Painting_YYYYMMDD-HHMMSS.png # Saved drawings
 └── README.md
 </pre>
+
+---
+## Landmarks For Hand Detection
+<h2 align="center">
+  <img src="image.png" >
+</h2>
+
 
 ---
 
