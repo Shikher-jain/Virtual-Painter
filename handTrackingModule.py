@@ -34,7 +34,6 @@ class handDetector():
         if self.results.multi_hand_landmarks:
             myHand = self.results.multi_hand_landmarks[handNo]
 
-
             for id, lm in enumerate(myHand.landmark):
                 # print(f"ID: {id}, X: {lm.x}, Y: {lm.y}")            
                 h, w, c = img.shape
@@ -66,8 +65,6 @@ class handDetector():
 
         return fingers
 
-
-
 def main():
     pTime = 0
     cTime = 0
@@ -78,7 +75,7 @@ def main():
         success , img = cap.read()
         
         img = detector.findHands(img)
-        lmList = detector.findPositins(img)
+        lmList = detector.findPosition(img)
         if len(lmList) != 0:
             print(lmList[4])
 
