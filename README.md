@@ -99,7 +99,10 @@ Virtual-Painter/
 │   ├── 3.jpg
 │   ├── 4.jpg
 │   └── 5.jpg
-├── Painting_YYYYMMDD-HHMMSS.png # Saved drawings
+├── Saved Canvas
+│   └── Painting_YYYYMMDD-HHMMSS.png # Saved drawings
+├── image.png
+├── requirements.txt
 └── README.md
 </pre>
 
