@@ -1,32 +1,24 @@
 # Virtual Painter
 
 import handTrackingModule as htm
-import mediapipe as mp
 import numpy as np
 import time
 import cv2
 import os
 
-# folderPath = os.path.dirname(os.path.abspath(__file__)) + "/Image"
 folderPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Image")
 os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Saved Canvas"), exist_ok=True)
 
-myList = os.listdir(folderPath)
+# Load all header images
+overlayList = [cv2.imread(os.path.join(folderPath, img)) for img in os.listdir(folderPath)]
 
-overlayList = []
-
-drawColor = (255, 0, 255)  # Default color
+# initial
+drawColor = (255, 0, 0)  # Default color
 brushThickness = 15
 eraserThickness = 100
 xp, yp = 0, 0
 imgCanvas = np.zeros((720, 1280, 3), np.uint8) #black img
 useAddWeighted = True
-
-# Load all header images
-for imgPath in myList:
-    image = cv2.imread(f'{folderPath}/{imgPath}')
-    overlayList.append(image)
-
 header = overlayList[0]
 
 cap = cv2.VideoCapture(0)
@@ -81,10 +73,10 @@ while True:
             thickness = eraserThickness if drawColor == (0, 0, 0) else brushThickness
 
             cv2.line(image, (xp, yp), (x1, y1), drawColor, thickness)
-            # cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, thickness)
             cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, thickness, cv2.LINE_AA)
 
             xp, yp = x1, y1
+
 
     if useAddWeighted:
         image = cv2.addWeighted(image, 0.75, imgCanvas, 0.95, 0)
@@ -100,11 +92,13 @@ while True:
 
     # Show final output
     cv2.imshow("Virtual Painter", image)
-
+    
     # Stop if 'q' is pressed
     key = cv2.waitKey(1) & 0xFF
+
     if key == ord('q'):
         break
+
     elif key == ord('s'):
         timestamp = time.strftime("%Y%m%d-%H%M%S")
         savePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Saved Canvas", f"Painting_{timestamp}.png")
@@ -113,7 +107,7 @@ while True:
 
     elif key == ord('m'):
         useAddWeighted = not useAddWeighted
-        print(f"Blending mode changed: {'addWeighted' if useAddWeighted else 'bitwise'}")
+        # print(f"Blending mode changed: {'addWeighted' if useAddWeighted else 'bitwise'}")
 
     # Release resources
 cap.release()
