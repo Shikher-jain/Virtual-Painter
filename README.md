@@ -1,3 +1,19 @@
+<!-- 
+# Virtual Painter
+
+'''
+------------------------------------------------
+1) Import Image from folder and display it on the screen
+2) Find the hand landmarks
+3) Check which finger are vUP
+4) If 2 fingers are up, then Selection mode
+5) If 1 finger is up, then Paint mode
+------------------------------------------------
+'''
+
+
+ -->
+
 <h2 align="center">
   Hi, I'm @Shikher-jain
   <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="28">
@@ -75,7 +91,6 @@ A fun and intuitive **hand gesture-based painting application** built using **Op
 
 <pre>
 Virtual-Painter/
-├── Saved Canvas                # Saved Canvas 
 ├── handTrackingModule.py       # Custom hand tracking class (using MediaPipe)
 ├── VirtualPainter.py           # Main file
 ├── Image/                      # Header icons for color selection
