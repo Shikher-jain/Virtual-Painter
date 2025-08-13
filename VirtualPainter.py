@@ -1,16 +1,5 @@
 # Virtual Painter
 
-'''
-------------------------------------------------
-1) Import Image from folder and display it on the screen
-2) Find the hand landmarks
-3) Check wiv finger are vUP
-4) If 2 fingers are up, then Selection mode
-5) If 1 finger is up, then Paint mode
-------------------------------------------------
-'''
-# Virtual Painter
-
 import handTrackingModule as htm
 import mediapipe as mp
 import numpy as np
@@ -18,18 +7,20 @@ import time
 import cv2
 import os
 
-folderPath = os.path.dirname(os.path.abspath(__file__)) + "/Image"
+# folderPath = os.path.dirname(os.path.abspath(__file__)) + "/Image"
+folderPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Image")
+os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Saved Canvas"), exist_ok=True)
+
 myList = os.listdir(folderPath)
+
 overlayList = []
 
 drawColor = (255, 0, 255)  # Default color
 brushThickness = 15
 eraserThickness = 100
 xp, yp = 0, 0
-imgCanvas = np.zeros((720, 1280, 3), np.uint8)
+imgCanvas = np.zeros((720, 1280, 3), np.uint8) #black img
 useAddWeighted = True
-
-
 
 # Load all header images
 for imgPath in myList:
@@ -42,7 +33,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 1280)  # Width
 cap.set(4, 720)   # Height
 
-detector = htm.handDetector(detectionCon=0.85, maxHands=1)
+detector = htm.handDetector(detectionCon=0.75, maxHands=1)
 
 while True:
     success, image = cap.read()
@@ -90,9 +81,10 @@ while True:
             thickness = eraserThickness if drawColor == (0, 0, 0) else brushThickness
 
             cv2.line(image, (xp, yp), (x1, y1), drawColor, thickness)
-            cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, thickness)
-            xp, yp = x1, y1
+            # cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, thickness)
+            cv2.line(imgCanvas, (xp, yp), (x1, y1), drawColor, thickness, cv2.LINE_AA)
 
+            xp, yp = x1, y1
 
     if useAddWeighted:
         image = cv2.addWeighted(image, 0.75, imgCanvas, 0.95, 0)
@@ -102,8 +94,6 @@ while True:
         imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
         image = cv2.bitwise_and(image, imgInv)
         image = cv2.bitwise_or(image, imgCanvas)
-
-
 
     # Add header
     image[0:header.shape[0], 0:header.shape[1]] = header
@@ -117,9 +107,9 @@ while True:
         break
     elif key == ord('s'):
         timestamp = time.strftime("%Y%m%d-%H%M%S")
-        cv2.imwrite(os.path.dirname(os.path.abspath(__file__)) + f"/Saved Canvas/Painting_{timestamp}.png", imgCanvas)
-        print(f"Canvas saved as {os.path.dirname(os.path.abspath(__file__)) }+ /Saved Canvas/Painting_{timestamp}.png")
-
+        savePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Saved Canvas", f"Painting_{timestamp}.png")
+        cv2.imwrite(savePath, imgCanvas)
+        print(f"Canvas saved as {savePath}")
 
     elif key == ord('m'):
         useAddWeighted = not useAddWeighted
